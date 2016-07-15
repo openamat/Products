@@ -1,8 +1,8 @@
 # AMAT Palermo SPA - Dati del trasporto pubblico locale su gomma
 
-Questa cartella contiene dataset creati a partire dal dal dataset ufficiale pubblicato sul sito del Comune di Palermo: [https://www.comune.palermo.it/opendata_dld.php?id=383](https://www.comune.palermo.it/opendata_dld.php?id=383)
+Questa cartella contiene dataset creati a partire dal dataset ufficiale pubblicato il **15 luglio** del **2016** sul sito del **Comune di Palermo**: [https://www.comune.palermo.it/opendata_dld.php?id=383](https://www.comune.palermo.it/opendata_dld.php?id=383)
 
-I dati in origine sono in formato [GTFS](https://developers.google.com/transit/gtfs/). Sono stati convertiti in formati più comodi per elaborazioni cartografiche e non.
+I dati originali sono in formato [GTFS](https://developers.google.com/transit/gtfs/). Sono stati qui convertiti in formati più comodi per elaborazioni cartografiche e non.
 
 ## PostgreSQL
 
