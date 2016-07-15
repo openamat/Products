@@ -18,3 +18,7 @@ I dati originali sono in formato [GTFS](https://developers.google.com/transit/gt
 [`amat201607.sqlite`](./amat201607.sqlite) deriva dall'export del db PostGIS, tramite [ogr2ogr](http://www.gdal.org/ogr2ogr.html):
 
     ogr2ogr --config PG_LIST_ALL_TABLES YES -f SQLite -dsco SPATIALITE=YES amat201607.sqlite PG:"dbname='amatdbgeo' host='localhost' port='5432' user='amat' password='password'"
+
+## KML
+
+[`amat201607.kml`](./amat201607.kml) in formato KML.
