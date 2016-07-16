@@ -18,6 +18,36 @@ var getAllStops = function (successCallback, errorCallback) {
         successCallback(stops);
     });
 };
+var getRouteStops = function (routeId, directionId, successCallback, errorCallback) {
+    fs.readFile(path.join(dataPath, 'route_stops.json'), 'utf-8', function (err, data) {
+       if(err) {
+           console.log(err);
+           errorCallback(err);
+       }
+       var allRouteStops = JSON.parse(data);
+       var routeStops = _.filter(allRouteStops, function (routeStop) {
+            return routeStop.route_id === routeId && routeStop.direction_id === directionId;
+       });
+       routeStops = _.sortBy(routeStops, ['order']);
+        fs.readFile(path.join(dataPath, 'stops.json'), 'utf-8', function (err, data) {
+           if(err) {
+               console.log(err);
+               errorCallback(err);
+           }
+            var allStops = JSON.parse(data);
+            _.each(routeStops, function (routeStop) {
+                var stop = _.find(allStops, {stop_id: routeStop.stop_id});
+                if(stop) {
+                    routeStop.stop_code = stop.stop_code;
+                    routeStop.stop_name = stop.stop_name;
+                    routeStop.stop_lat = stop.stop_lat;
+                    routeStop.stop_lon = stop.stop_lon;
+                }
+            });
+            successCallback(routeStops);
+        });
+    });
+};
 //endregion
 //region ROUTE CONFIG
 var allStops = {
@@ -37,8 +67,31 @@ var allStops = {
         });
     }
 };
+var routeStops = {
+    method: 'GET',
+    path: '/stops/{route_id}/{direction_id}',
+    handler: function (request, reply) {
+        var routeId = request.params.route_id;
+        var directionId = request.params.direction_id !== undefined ? parseInt(request.params.direction_id) : 0;
+        getRouteStops(
+            routeId,
+            directionId,
+            function (data) {
+                reply({
+                    resultCode: 'OK',
+                    resultObj: data
+                });
+            }, function (err) {
+                reply({
+                    resultCode: 'KO',
+                    error: err
+                })
+            });
+    }
+};
 var stops = {
-    allStops: allStops
+    allStops: allStops,
+    routeStops: routeStops
 };
 
 module.exports = stops;

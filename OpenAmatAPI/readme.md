@@ -10,7 +10,7 @@ Le API ritornato un oggetto JSON con il seguente formato:
 #Dettaglio API e Path
 
 1. /routes
-    Ritorna tutte le rotte
+    Ritorna tutte le rotte ( linee )
 2. /stops
     Ritorna tutte le fermate
     

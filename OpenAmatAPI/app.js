@@ -25,6 +25,7 @@ app.route({
   }
 });
 app.route(apiConfig.routes.allRoutes);
+app.route(apiConfig.stops.routeStops);
 app.route(apiConfig.stops.allStops);
 
 app.start(function (err) {
