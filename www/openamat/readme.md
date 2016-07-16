@@ -65,6 +65,10 @@ Da questo momento in poi, sarà possibile far riferimento a tutte le entità (ag
 
 Un esempio di API è il seguente:
 
+[GET] http://openamat.dev/api/v1/agencies
+
+Risposta:
+
     {
       "total": 1,
       "per_page": 25,
