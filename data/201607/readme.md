@@ -22,3 +22,6 @@ I dati originali sono in formato [GTFS](https://developers.google.com/transit/gt
 ## KML
 
 [`amat201607.kml`](./amat201607.kml) in formato KML.
+
+## JSON
+All'interno della cartella json trovate tutti i files
