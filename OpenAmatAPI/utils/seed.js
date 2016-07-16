@@ -39,6 +39,7 @@ var createRoutes = function () {
             queryDirections.find().then(function (directions) {
                 var relation = newRoute.relation("directions");
                 relation.add(directions);
+                console.log("Route with route_id " + newRoute.get('route_id'));
                 return newRoute.save();
             });
         });
