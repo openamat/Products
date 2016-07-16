@@ -1,45 +1,24 @@
-var hapi = require('hapi');
+var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var apiConfig = require('./routes/apiConfig.js');
 var ipaddress = require('./utils/ipaddress')();
-var app = new hapi.Server({
-    connections: {
-        routes: {
-            cors: true
-        }
-    }
+var ParseServer = require('parse-server').ParseServer;
+var routes = require('./routes/routes');
+var stops = require('./routes/stops');
+var app = express();
+var api = new ParseServer({
+    databaseURI: 'mongodb://localhost:27017/dev',
+    //cloud: '/home/myApp/cloud/main.js', // Absolute path to your Cloud Code
+    appId: 'openamat',
+    masterKey: 'uJBb7N4uq45nZjNM',
+    serverURL: 'http://localhost:1337/parse'
 });
-
-app.connection({
-    host: ipaddress,
-    port: 3000
+app.use('/parse', api);
+app.use('/routes', routes);
+app.listen(1337, function() {
+    console.log('parse-server running on port 1337.');
 });
-app.route({
-  method: 'GET',
-  path: '/',
-  handler: function (request, reply) {
-      reply({
-          resultCode: 'OK',
-          resultObj: {
-              message: 'Server up'
-          }
-      });
-  }
-});
-app.route(apiConfig.routes.allRoutes);
-app.route(apiConfig.routes.routeDirections);
-app.route(apiConfig.stops.routeStops);
-app.route(apiConfig.stops.allStops);
-
-app.start(function (err) {
-  if (err) {
-    throw err;
-  }
-  console.log('Server running at:', app.info.uri);
-});
-
 module.exports = app;

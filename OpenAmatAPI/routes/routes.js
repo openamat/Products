@@ -6,86 +6,59 @@ var path = require('path');
 var _ = require('lodash');
 var find = require('lodash.find');
 var dataPath = path.join(process.cwd(), 'data');
+var express = require('express');
+var router = express.Router();
+var Parse = require('parse/node');
+var Moment = require('moment');
+Parse.initialize('openamat');
+Parse.serverURL = 'http://localhost:1337/parse';
 _.find = find;
 //region Helper Method
 var getAllRoutes = function (successCallback, errorCallback) {
-    fs.readFile(path.join(dataPath, 'routes.json'), 'utf-8', function (err, data) {
-        if(err) {
-            console.log(err);
-            errorCallback(err);
-        }
-        var routes = JSON.parse(data);
-        fs.readFile(path.join(dataPath, 'route_type.json'), 'utf-8', function (err, data) {
-            if(err) {
-                console.log(err);
-                errorCallback(err);
-            }
-            var routeTypes = JSON.parse(data);
-            _.each(routes, function (route) {
-                var routeType = _.find(routeTypes, function (routeType) {
-                    return routeType.route_type === route.route_type;
-                });
-                route.route_type_name = routeType.route_type_name;
-                route.route_type_desc = routeType.route_type_desc;
-            });
-            successCallback(routes);
-        });
-
+    var Route = Parse.Object.extend("Route");
+    var queryAll = new Parse.Query(Route);
+    queryAll.find().then(function (routes) {
+        var route = routes[0];
+        successCallback(route);
     });
 };
 var getRouteDirections = function (routeId, successCallback, errorCallback) {
-    fs.readFile(path.join(dataPath, 'route_directions.json'), 'utf-8', function (err, data) {
-        if(err) {
-            console.log(err);
-            errorCallback(err);
-        }
-        var allDirections = JSON.parse(data);
-        var routeDirections = _.filter(allDirections, {route_id: routeId});
-        successCallback(routeDirections);
+    var Route = Parse.Object.extend("Route");
+    var query = new Parse.Query(Route);
+    query.equalTo('route_id', routeId);
+    query.find().then(function (route) {
+       successCallback(route[0]);
     });
 };
+router.get('/', function (req, res, next) {
+    getAllRoutes(function (data) {
+        res.send({
+            status: 'success',
+            data: data
+        })
+    }, function (err) {
+       res.send({
+           status: 'failed',
+           message: err.message
+       })
+    });
+});
+router.get('/directions/:routeId', function (req, res, next) {
+    var routeId = req.params.routeId;
+    getRouteDirections(routeId, function (data) {
+        res.send({
+            status: 'success',
+            data: data
+        });
+    }, function (err) {
+        res.send({
+            status: 'failed',
+            message: err.message
+        });
+    });
+});
 //endregion
 //region ROUTE CONFIG
-var allRoutes = {
-    method: 'GET',
-    path: '/routes',
-    handler: function (request, reply) {
-        getAllRoutes(function (data) {
-            reply({
-                resultCode: 'OK',
-                resultObj: data
-            });
-        },function (err) {
-            reply({
-                resultCode: 'KO',
-                error: err
-            })
-        });
-    }
-};
-var routeDirections = {
-    method: 'GET',
-    path: '/routes/directions/{routeId}',
-    handler: function (request, reply) {
-        var routeId = request.params.routeId;
-        getRouteDirections(routeId,function (data) {
-            reply({
-                resultCode: 'OK',
-                resultObj: data
-            });
-        },function (err) {
-            reply({
-                resultCode: 'KO',
-                error: err
-            })
-        });
-    }
-};
 
-var routes = {
-    allRoutes: allRoutes,
-    routeDirections: routeDirections
-};
-
-module.exports = routes;
+module.exports = router;
 //endregion

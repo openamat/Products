@@ -13,8 +13,13 @@
     "jade": "~1.11.0",
     "lodash.find": "^4.4.0",
     "mkdirp": "^0.5.1",
+    "moment": "^2.14.1",
+    "mongodb-runner": "^3.3.2",
     "morgan": "~1.7.0",
+    "parse": "^1.9.0",
+    "parse-server": "^2.2.16",
     "pg-json-data-export": "^0.10.4",
+    "promise": "^7.1.1",
     "serve-favicon": "~2.3.0"
   }
 }
