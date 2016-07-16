@@ -18,8 +18,7 @@ var getAllRoutes = function (successCallback, errorCallback) {
     var Route = Parse.Object.extend("Route");
     var queryAll = new Parse.Query(Route);
     queryAll.find().then(function (routes) {
-        var route = routes[0];
-        successCallback(route);
+        successCallback(routes);
     });
 };
 var getRouteDirections = function (routeId, successCallback, errorCallback) {
@@ -27,7 +26,8 @@ var getRouteDirections = function (routeId, successCallback, errorCallback) {
     var query = new Parse.Query(Route);
     query.equalTo('route_id', routeId);
     query.find().then(function (route) {
-       successCallback(route[0]);
+        var route = routes[0];
+        successCallback(route);
     });
 };
 router.get('/', function (req, res, next) {
