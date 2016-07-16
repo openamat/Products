@@ -9,8 +9,11 @@ Le API ritornato un oggetto JSON con il seguente formato:
     
 #Dettaglio API e Path
 
-1. /routes
+1. GET /routes
     Ritorna tutte le rotte ( linee )
-2. /stops
+2. GET /stops
     Ritorna tutte le fermate
+3. GET /stops/{routeId}/{directionId}
+    Ritorna le fermate per la linea indicata e la direzione in ordine crescente
+    
     
