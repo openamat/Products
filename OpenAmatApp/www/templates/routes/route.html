@@ -1,0 +1,18 @@
+<ion-view title="Linea {{ routeShortName }}">
+  <ion-content>
+    <div ng-repeat="direction in directions track by $index">
+      <ion-item
+        class="item-stable"
+        ng-click="toggleGroup(direction)"
+        ng-class="{active: isGroupShown(direction)}">
+        <i class="icon" ng-class="isGroupShown(direction) ? 'ion-minus' : 'ion-plus'"></i>
+        Direzione {{ direction.direction_name}}
+      </ion-item>
+      <ion-item class="item-accordion"
+                ng-repeat="stop in direction.stops track by $index"
+                ng-show="isGroupShown(direction)">
+        <span ng-bind-html="stop.stop_name"> </span>
+      </ion-item>
+    </div>
+  </ion-content>
+</ion-view>
