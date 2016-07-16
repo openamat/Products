@@ -5,13 +5,19 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var apiConfig = require('./routes/apiConfig.js');
-var app = new hapi.Server();
+var ipaddress = require('./utils/ipaddress')();
+var app = new hapi.Server({
+    connections: {
+        routes: {
+            cors: true
+        }
+    }
+});
 
-app.connection(
-    {
-      host: 'localhost',
-      port: 3000
-    });
+app.connection({
+    host: ipaddress,
+    port: 3000
+});
 app.route({
   method: 'GET',
   path: '/',
@@ -25,6 +31,7 @@ app.route({
   }
 });
 app.route(apiConfig.routes.allRoutes);
+app.route(apiConfig.routes.routeDirections);
 app.route(apiConfig.stops.routeStops);
 app.route(apiConfig.stops.allStops);
 

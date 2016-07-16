@@ -33,6 +33,17 @@ var getAllRoutes = function (successCallback, errorCallback) {
 
     });
 };
+var getRouteDirections = function (routeId, successCallback, errorCallback) {
+    fs.readFile(path.join(dataPath, 'route_directions.json'), 'utf-8', function (err, data) {
+        if(err) {
+            console.log(err);
+            errorCallback(err);
+        }
+        var allDirections = JSON.parse(data);
+        var routeDirections = _.filter(allDirections, {route_id: routeId});
+        successCallback(routeDirections);
+    });
+};
 //endregion
 //region ROUTE CONFIG
 var allRoutes = {
@@ -52,9 +63,28 @@ var allRoutes = {
         });
     }
 };
+var routeDirections = {
+    method: 'GET',
+    path: '/routes/directions/{routeId}',
+    handler: function (request, reply) {
+        var routeId = request.params.routeId;
+        getRouteDirections(routeId,function (data) {
+            reply({
+                resultCode: 'OK',
+                resultObj: data
+            });
+        },function (err) {
+            reply({
+                resultCode: 'KO',
+                error: err
+            })
+        });
+    }
+};
 
 var routes = {
-    allRoutes: allRoutes
+    allRoutes: allRoutes,
+    routeDirections: routeDirections
 };
 
 module.exports = routes;

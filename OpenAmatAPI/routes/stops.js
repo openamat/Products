@@ -69,10 +69,10 @@ var allStops = {
 };
 var routeStops = {
     method: 'GET',
-    path: '/stops/{route_id}/{direction_id}',
+    path: '/stops/{routeId}/{directionId}',
     handler: function (request, reply) {
-        var routeId = request.params.route_id;
-        var directionId = request.params.direction_id !== undefined ? parseInt(request.params.direction_id) : 0;
+        var routeId = request.params.routeId;
+        var directionId = request.params.directionId !== undefined ? parseInt(request.params.directionId) : 0;
         getRouteStops(
             routeId,
             directionId,
