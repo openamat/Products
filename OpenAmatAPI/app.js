@@ -22,11 +22,11 @@ var api = new ParseServer({
 });
 app.use(cors());
 app.use('/parse', api);
-app.use('/routes', routes);
-app.use('/directions', directions);
-app.use('/stops', stops);
-app.use('/trips', trips);
-app.use('/fares', fares);
+app.use('/api/routes', routes);
+app.use('/api/directions', directions);
+app.use('/api/stops', stops);
+app.use('/api/trips', trips);
+app.use('/api/fares', fares);
 app.listen(1337, function() {
     console.log('parse-server running on port 1337.');
 });
