@@ -73,7 +73,7 @@ class ImportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
 
         //Temporary Feature, TODO: CSV Import Feature
@@ -131,6 +131,14 @@ class ImportController extends Controller
 
         foreach ($trips['trips'] as $trip) {
             $this->tripService->create($trip);
+        }
+
+        $services = json_decode(file_get_contents('http://95.85.8.145/data/201607/json/calendar.txt.json'), JSON_NUMERIC_CHECK);
+
+        $this->serviceService->truncate();
+
+        foreach ($services['calendar'] as $service) {
+            $this->serviceService->create($service);
         }
 
 

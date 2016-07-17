@@ -47,7 +47,7 @@
 
         <div class="pull-left raw100 navbar navbar-fixed-bottom">
             <div class="pull-left footer">
-                <p class="raw-margin-left-20">&copy; {!! date('Y') !!} <a href="http://sheephero.com" target="_blank">OpenAmat</a>
+                <p class="raw-margin-left-20">&copy; {!! date('Y') !!} <a href="http://openamat.com" target="_blank">OpenAmat</a>
                     @if (Session::get('original_user'))
                         <a class="btn btn-default pull-right btn-xs" href="/users/switch-back">Return to your Login</a>
                     @endif
