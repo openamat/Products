@@ -17,13 +17,13 @@ Le API ritornato un oggetto JSON in formato JSEND:
 
 #Dettaglio API e Path
 
-1. GET /routes
+1. GET /api/routes
     Ritorna tutte le rotte ( linee )
-2. GET /directions/{routeId}
+2. GET /api/directions/{routeId}
     Ritorna le direzioni di una linea
-3. GET /stops
+3. GET /api/stops
     Ritorna tutte le fermate
-4. GET /stops/{routeId}/{directionId}
+4. GET /api/stops/{routeId}/{directionId}
     Ritorna le fermate per la linea indicata e la direzione in ordine crescente
     
     
