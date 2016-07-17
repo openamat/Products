@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Repositories\Route;
+namespace App\Repositories\Trip;
 
-use App\Repositories\Route\Route;
+use App\Repositories\Trip\Trip;
 use Illuminate\Support\Facades\Schema;
 
-class RouteRepository
+class TripRepository
 {
-    public function __construct(Route $route)
+    public function __construct(Trip $trip)
     {
-        $this->model = $route;
+        $this->model = $trip;
     }
 
     /**
-     * Returns all routes
+     * Returns all trips
      *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
@@ -33,17 +33,17 @@ class RouteRepository
     }
 
     /**
-     * Search Route
+     * Search Trip
      *
      * @param string $input
      *
-     * @return Route
+     * @return Trip
      */
     public function search($input, $paginate)
     {
         $query = $this->model->orderBy('created_at', 'desc');
 
-        $columns = Schema::getColumnListing('routes');
+        $columns = Schema::getColumnListing('trips');
 
         foreach ($columns as $attribute) {
             $query->orWhere($attribute, 'LIKE', '%'.$input.'%');
@@ -53,11 +53,11 @@ class RouteRepository
     }
 
     /**
-     * Stores Route into database
+     * Stores Trip into database
      *
      * @param array $input
      *
-     * @return Route
+     * @return Trip
      */
     public function create($input)
     {
@@ -65,11 +65,11 @@ class RouteRepository
     }
 
     /**
-     * Find Route by given id
+     * Find Trip by given id
      *
      * @param int $id
      *
-     * @return \Illuminate\Support\Collection|null|static|Route
+     * @return \Illuminate\Support\Collection|null|static|Trip
      */
     public function find($id)
     {
@@ -77,11 +77,11 @@ class RouteRepository
     }
 
     /**
-     * Destroy Route
+     * Destroy Trip
      *
      * @param int $id
      *
-     * @return \Illuminate\Support\Collection|null|static|Route
+     * @return \Illuminate\Support\Collection|null|static|Trip
      */
     public function destroy($id)
     {
@@ -100,19 +100,19 @@ class RouteRepository
     }
 
     /**
-     * Updates Route in the database
+     * Updates Trip in the database
      *
      * @param int $id
      * @param array $inputs
      *
-     * @return Route
+     * @return Trip
      */
     public function update($id, $inputs)
     {
-        $route = $this->model->find($id);
-        $route->fill($inputs);
-        $route->save();
+        $trip = $this->model->find($id);
+        $trip->fill($inputs);
+        $trip->save();
 
-        return $route;
+        return $trip;
     }
 }

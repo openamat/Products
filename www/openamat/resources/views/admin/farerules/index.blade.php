@@ -19,15 +19,21 @@
 
                 <thead>
                 <th>Fare Rules</th>
+                <th>Route Id</th>
+                <th>Origin Id</th>
+                <th>Destination Id</th>
                 <th class="text-right">Action</th>
                 </thead>
                 <tbody>
-                @if($fares->isEmpty())
+                @if($farerules->isEmpty())
                     <div class="well text-center">No fare rules found.</div>
                 @else
                     @foreach($farerules as $farerule)
                         <tr>
                             <td>{{ $farerule->fare_id }}</td>
+                            <td>{{ $farerule->route_id }}</td>
+                            <td>{{ $farerule->origin_id }}</td>
+                            <td>{{ $farerule->destination_id }}</td>
                             <td>
                                 <form method="post" action="{!! url('admin/farerules/'.$farerule->id) !!}">
                                     {!! csrf_field() !!}

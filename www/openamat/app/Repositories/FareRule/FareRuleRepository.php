@@ -89,6 +89,17 @@ class FareRuleRepository
     }
 
     /**
+     * Truncate all Fares
+     *
+     *
+     * @return \Illuminate\Support\Collection|null|static|Fare
+     */
+    public function truncate()
+    {
+        return $this->model->truncate();
+    }
+
+    /**
      * Updates FareRule in the database
      *
      * @param int $id

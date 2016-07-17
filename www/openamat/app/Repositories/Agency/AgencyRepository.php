@@ -104,4 +104,15 @@ class AgencyRepository
 
         return $agency;
     }
+
+    /**
+     * Destroy all Agencies
+     *
+     *
+     * @return \Illuminate\Support\Collection|null|static|Agency
+     */
+    public function truncate()
+    {
+        return $this->model->truncate();
+    }
 }

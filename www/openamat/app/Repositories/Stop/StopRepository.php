@@ -89,6 +89,17 @@ class StopRepository
     }
 
     /**
+     * Truncate all Fares
+     *
+     *
+     * @return \Illuminate\Support\Collection|null|static|Fare
+     */
+    public function truncate()
+    {
+        return $this->model->truncate();
+    }
+
+    /**
      * Updates Stop in the database
      *
      * @param int $id

@@ -45,5 +45,10 @@ class FareService
     {
         return $this->repo->destroy($id);
     }
+    
+    public function truncate()
+    {
+        return $this->repo->truncate();
+    }
 
 }

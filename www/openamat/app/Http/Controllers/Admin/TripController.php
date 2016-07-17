@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Services\FareRuleService;
-use App\Http\Requests\FareRuleRequest;
+use App\Services\TripService;
+use App\Http\Requests\TripRequest;
 
-class FareRuleController extends Controller
+class TripController extends Controller
 {
-    public function __construct(FareRuleService $fareruleService)
+    public function __construct(TripService $tripService)
     {
-        $this->service = $fareruleService;
+        $this->service = $tripService;
     }
 
     /**
@@ -21,8 +21,8 @@ class FareRuleController extends Controller
      */
     public function index(Request $request)
     {
-        $farerules = $this->service->paginated();
-        return view('admin.farerules.index')->with('farerules', $farerules);
+        $trips = $this->service->paginated();
+        return view('admin.trips.index')->with('trips', $trips);
     }
 
     /**
@@ -32,8 +32,8 @@ class FareRuleController extends Controller
      */
     public function search(Request $request)
     {
-        $farerules = $this->service->search($request->search);
-        return view('admin.farerules.index')->with('farerules', $farerules);
+        $trips = $this->service->search($request->search);
+        return view('admin.trips.index')->with('trips', $trips);
     }
 
     /**
@@ -43,58 +43,58 @@ class FareRuleController extends Controller
      */
     public function create()
     {
-        return view('admin.farerules.create');
+        return view('admin.trips.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\FareRuleRequest  $request
+     * @param  \Illuminate\Http\TripRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(FareRuleRequest $request)
+    public function store(TripRequest $request)
     {
         $result = $this->service->create($request->except('_token'));
 
         if ($result) {
-            return redirect(route('admin.farerules.edit', ['id' => $result->id]))->with('message', 'Successfully created');
+            return redirect(route('admin.trips.edit', ['id' => $result->id]))->with('message', 'Successfully created');
         }
 
-        return redirect(route('admin.farerules.index'))->with('message', 'Failed to create');
+        return redirect(route('admin.trips.index'))->with('message', 'Failed to create');
     }
 
     /**
-     * Display the farerules.
+     * Display the trips.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $farerule = $this->service->find($id);
-        return view('admin.farerules.show')->with('farerule', $farerule);
+        $trip = $this->service->find($id);
+        return view('admin.trips.show')->with('trip', $trip);
     }
 
     /**
-     * Show the form for editing the farerules.
+     * Show the form for editing the trips.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $farerule = $this->service->find($id);
-        return view('admin.farerules.edit')->with('farerule', $farerule);
+        $trip = $this->service->find($id);
+        return view('admin.trips.edit')->with('trip', $trip);
     }
 
     /**
-     * Update the farerules in storage.
+     * Update the trips in storage.
      *
-     * @param  \Illuminate\Http\FareRuleRequest  $request
+     * @param  \Illuminate\Http\TripRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(FareRuleRequest $request, $id)
+    public function update(TripRequest $request, $id)
     {
         $result = $this->service->update($id, $request->except('_token'));
 
@@ -106,7 +106,7 @@ class FareRuleController extends Controller
     }
 
     /**
-     * Remove the farerules from storage.
+     * Remove the trips from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -116,9 +116,9 @@ class FareRuleController extends Controller
         $result = $this->service->destroy($id);
 
         if ($result) {
-            return redirect(route('admin.farerules.index'))->with('message', 'Successfully deleted');
+            return redirect(route('admin.trips.index'))->with('message', 'Successfully deleted');
         }
 
-        return redirect(route('admin.farerules.index'))->with('message', 'Failed to delete');
+        return redirect(route('admin.trips.index'))->with('message', 'Failed to delete');
     }
 }

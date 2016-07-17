@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\FareRule\FareRuleRepository;
+use App\Repositories\Trip\TripRepository;
 
-class FareRuleService
+class TripService
 {
-    public function __construct(FareRuleRepository $fareruleRepository)
+    public function __construct(TripRepository $tripRepository)
     {
-        $this->repo = $fareruleRepository;
+        $this->repo = $tripRepository;
     }
 
     public function all()

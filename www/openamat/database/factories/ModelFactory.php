@@ -281,3 +281,25 @@ $factory->define(App\Repositories\FareRule\FareRule::class, function (Faker\Gene
 
     ];
 });
+
+/*
+|--------------------------------------------------------------------------
+| Trip Factory
+|--------------------------------------------------------------------------
+*/
+
+$factory->define(App\Repositories\Trip\Trip::class, function (Faker\Generator $faker) {
+    return [
+
+        'id' => '1',
+		'route_id' => 'laravel',
+		'service_id' => 'laravel',
+		'trip_id' => 'laravel',
+		'trip_headsign' => 'laravel',
+		'direction_id' => 'laravel',
+		'block_id' => 'laravel',
+		'shape_id' => 'laravel',
+
+
+    ];
+});
