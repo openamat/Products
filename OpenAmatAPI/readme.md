@@ -19,7 +19,7 @@ Le API ritornato un oggetto JSON in formato JSEND:
 
 1. GET /routes
     Ritorna tutte le rotte ( linee )
-2. GET /routes/directions/{routeId}
+2. GET /directions/{routeId}
     Ritorna le direzioni di una linea
 3. GET /stops
     Ritorna tutte le fermate

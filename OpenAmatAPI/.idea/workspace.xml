@@ -112,8 +112,8 @@
           </provider>
           <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="260">
-                <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+              <first_editor relative-caret-position="156">
+                <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -355,12 +355,12 @@
       <workItem from="1468660978060" duration="5749000" />
       <workItem from="1468669880958" duration="725000" />
       <workItem from="1468682551546" duration="28268000" />
-      <workItem from="1468756380034" duration="8366000" />
+      <workItem from="1468756380034" duration="8475000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47922000" />
+    <option name="totallyTimeSpent" value="48031000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -797,8 +797,8 @@
       </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="260">
-            <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <first_editor relative-caret-position="156">
+            <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
             <folding />
           </first_editor>
           <second_editor />
