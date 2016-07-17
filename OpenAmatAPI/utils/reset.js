@@ -12,7 +12,7 @@ Parse.serverURL = 'http://localhost:1337/parse';
 var resetTable = function(tableName) {
     var Table = Parse.Object.extend(tableName);
     var query = new Parse.Query(Table);
-    query.limit(10000);
+    query.limit(100000);
     return query.find().then(function(items) {
         console.log('Eliminazione' + tableName + ": " + items.length + " oggetti");
         var promise = Parse.Promise.as();
@@ -25,7 +25,7 @@ var resetTable = function(tableName) {
     });
 };
 
-var tables = ["Stop", "Route", "Direction"];
+var tables = ["Stop", "Direction", "Route", "Trip", "Fare"];
 
 for (var i = 0; i < tables.length; i++) {
     resetTable(tables[i])

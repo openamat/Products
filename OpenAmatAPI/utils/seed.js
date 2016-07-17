@@ -10,9 +10,9 @@ var Parse = require('parse/node');
 var Moment = require('moment');
 var dataPath = path.join(process.cwd(), 'data');
 var connection = {
-    host: 'localhost',
-    username: 'entony',
-    database: 'openamat'
+    host: 'localhost', //PG DB HOST
+    username: 'entony',// PG DB USER
+    database: 'openamat'//PG DB NAME
 };
 var schema = 'public';
 Parse.initialize('openamat');
@@ -34,70 +34,60 @@ var createRoutes = function () {
             _.each(route, function (value, key) {
                 newRoute.set(key, value);
             });
-            var queryDirections = new Parse.Query(Direction);
-            queryDirections.equalTo('route_id', route.route_id);
-            queryDirections.find().then(function (directions) {
-                var relation = newRoute.relation("directions");
-                relation.add(directions);
-                return newRoute.save();
-            });
+            console.log("Route with route_id -> " + newRoute.get('route_id'));
+            return newRoute.save();
         });
     };
-    fs.readFile(path.join(dataPath, 'routes.json'), 'utf-8', function (err, data) {
-        if(err) {
-            console.log(err);
-        }
-        var routes = JSON.parse(data);
-        console.log("Routes length -> " + routes.length);
-        routes.forEach(function (route) {
-           promise =  createRoute(promise, route);
-        });
+    var data = fs.readFileSync(path.join(dataPath, 'routes.json'), 'utf-8');
+    var routes = JSON.parse(data);
+    console.log("Routes length -> " + routes.length);
+    routes.forEach(function (route) {
+        promise = createRoute(promise, route);
     });
     return promise;
 };
 var createRouteDirections = function () {
     var promise = Parse.Promise.as();
-    var createDirection = function (promise, direction, allRouteStops) {
+    var createDirection = function (promise, direction) {
         return promise.then(function () {
-            var routeStops = _.sortBy(_.filter(allRouteStops, {route_id: direction.route_id}), 'order');
             var newDirection = new Direction();
             _.each(direction, function (value, key) {
                 newDirection.set(key, value);
             });
-            routeStops.forEach(function (stop) {
-                var queryStop = new Parse.Query(Stop);
-                queryStop.equalTo('stop_id', stop.stop_id);
-                queryStop.find().then(function (stop) {
-                    var relation = newDirection.relation("stops");
-                    console.log(stop);
-                    relation.add(stop);
-                    console.log("Direction with direction_id " + newDirection.get('direction_id'));
-                    return newDirection.save();
+            var queryRoute = new Parse.Query(Route);
+            queryRoute.equalTo('route_id', direction.route_id);
+            return queryRoute.find()
+                .then(function (route) {
+                    newDirection.set('route', route);
+                    console.log("Directions with direction_id -> " + newDirection.get('direction_id'));
+                    var data = fs.readFileSync(path.join(dataPath, 'route_stops.json'), 'utf-8');
+                    var allRouteStops = JSON.parse(data);
+                    var routeStops = _.filter(allRouteStops, {
+                        route_id: direction.route_id,
+                        direction_id: direction.direction_id
+                    });
+                    var routeStopsId = _.map(routeStops, function (stop) {
+                       return stop.stop_id;
+                    });
+                    var queryStop = new Parse.Query(Stop);
+                    queryStop.containedIn("stop_id", routeStopsId);
+                    return queryStop.find().then(function (stops) {
+                        var relation = newDirection.relation("stops");
+                        relation.add(stops);
+                        return newDirection.save();
+                    });
                 });
-            });
         });
     };
-    fs.readFile(path.join(dataPath, 'route_directions.json'), 'utf-8', function (err, data) {
-        if (err) {
-            console.log(err);
-        }
-        var directions = JSON.parse(data);
-        console.log("Directions length -> " + directions.length);
-        fs.readFile(path.join(dataPath, 'route_stops.json'), 'utf-8', function (err, data) {
-            if (err) {
-                console.log(err);
-            }
-            var allRouteStops = JSON.parse(data);
-            directions.forEach(function (direction) {
-                promise = createDirection(promise, direction, allRouteStops);
-            });
-        });
+    var data = fs.readFileSync(path.join(dataPath, 'route_directions.json'), 'utf-8');
+    var directions = JSON.parse(data);
+    console.log("Directions length -> " + directions.length);
+    directions.forEach(function (direction) {
+        promise = createDirection(promise, direction);
     });
     return promise;
 };
 var createStops = function () {
-    var promise = Parse.Promise.as();
-    console.log('Start create stops');
     var createStop = function (promise, stop) {
         return promise.then(function () {
             var newStop = new Stop();
@@ -108,41 +98,112 @@ var createStops = function () {
             return newStop.save();
         });
     };
-    fs.readFile(path.join(dataPath, 'stops.json'), 'utf-8', function (err, data) {
-        if(err) {
-            console.log(err);
-            return;
-        }
-        var stops = JSON.parse(data);
-        console.log("Stops length -> " + stops.length);
-        stops.forEach(function (stop) {
-            promise = createStop(promise, stop);
-        });
+    console.log('Start create stops');
+    var promise = Parse.Promise.as();
+    var data = fs.readFileSync(path.join(dataPath, 'stops.json'), 'utf-8');
+    var stops = JSON.parse(data);
+    console.log("Stops length -> " + stops.length);
+    stops.forEach(function (stop) {
+        promise = createStop(promise, stop);
     });
     return promise;
 };
-var createTrip = function () {
-
+var createTrips = function () {
+    var promise = Parse.Promise.as();
+    var createTrip = function (promise, trip) {
+        return promise.then(function () {
+           var newTrip = new Trip();
+            _.each(trip, function (value, key) {
+               newTrip.set(key, value);
+            });
+            console.log("Trip with trip_id -> " + newTrip.get('trip_id'));
+            var queryDirection = new Parse.Query(Direction);
+            queryDirection.equalTo('route_id', trip.route_id)
+                .equalTo('direction_id', trip.direction_id);
+            return queryDirection.find()
+                .then(function (direction) {
+                    console.log(direction);
+                    newTrip.set('direction', direction);
+                    return newTrip.save();
+                });
+        });
+    };
+    var data = fs.readFileSync(path.join(dataPath, 'trips.json'), 'utf-8');
+    var trips = JSON.parse(data);
+    trips.forEach(function (trip) {
+        promise = createTrip(promise, trip);
+    });
+    return promise;
 };
-var createFare = function () {
-
+var createFares = function () {
+    var promise = Parse.Promise.as();
+    var createFare = function (promise, fare) {
+      return promise.then(function () {
+         var newFare = new Fare();
+          _.each(fare, function (value, key) {
+             newFare.set(key, value);
+          });
+          console.log("Fare with fare_id -> " + newFare.get('fare_id'));
+          return newFare.save();
+      });
+    };
+    var data = fs.readFileSync(path.join(dataPath, 'fare_attributes.json'), 'utf-8');
+    var fares = JSON.parse(data);
+    fares.forEach(function (fare) {
+        promise = createFare(promise, fare);
+    });
+    return promise;
 };
-//endregion
-var stopPromises = [];
-var directionPromises = [];
-var routePromises = [];
+var resetTables = function () {
+    var resetTable = function(promise, tableName) {
+        var Table = Parse.Object.extend(tableName);
+        var query = new Parse.Query(Table);
+        query.limit(100000);
+        return query.find().then(function(items) {
+            console.log('Eliminazione' + tableName + ": " + items.length + " oggetti");
+            var promise = Parse.Promise.as();
+            items.forEach(function(item) {
+                promise = promise.then(function() {
+                    return item.destroy();
+                });
+            });
+            return promise;
+        });
+    };
+    var promise = Parse.Promise.as();
+    var tables = ["Stop", "Direction", "Route", "Trip", "Fare"];
+    tables.forEach(function (table) {
+       promise = resetTable(promise, table);
+    });
+    return promise;
+};
+
+
 var storeObjects = function () {
     console.log('Start store object');
-    createStops()
+    resetTables()
         .then(function () {
-            return createRouteDirections()
+            return createStops();
         })
         .then(function () {
-            return createRoutes()
+            return createRoutes();
         })
         .then(function () {
-            console.log("Finish ...");
+            return createRouteDirections();
         })
+        .then(function () {
+            return createFares();
+        })
+        .then(function () {
+            return createTrips();
+        })
+        .then(function () {
+            console.log("All done!");
+            return;
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 };
 
 exporter.toJSON(connection, schema)
@@ -156,13 +217,22 @@ exporter.toJSON(connection, schema)
                 if(err) {
                     return;
                 }
-                fs.writeFile(path.join(dataPath, key + '.json'), JSON.stringify(value.rows), 'utf-8');
-                last = index === keys - 1;
-                if(last) {
-                    storeObjects();
-                } else {
-                    index++;
-                }
+                fs.writeFile(
+                    path.join(dataPath, key + '.json'),
+                    JSON.stringify(value.rows),
+                    'utf-8',
+                    function (err) {
+                        if(err) {
+                            console.log(err);
+                            return;
+                        }
+                        last = index === keys - 1;
+                        if(last) {
+                            storeObjects();
+                        } else {
+                            index++;
+                        }
+                });
             });
         });
     });
