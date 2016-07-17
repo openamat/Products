@@ -1,5 +1,8 @@
 /**
- * Created by antoninotocco on 16/07/16.
+ * Created by antoninotocco on 17/07/16.
+ */
+/**
+ * Created by antoninotocco on 17/07/16.
  */
 var fs = require('fs');
 var path = require('path');
@@ -13,27 +16,23 @@ var Moment = require('moment');
 Parse.initialize('openamat');
 Parse.serverURL = 'http://localhost:1337/parse';
 _.find = find;
-//region Helper Method
-var getAllRoutes = function (successCallback, errorCallback) {
-    var Route = Parse.Object.extend("Route");
-    var queryAll = new Parse.Query(Route);
+var getAllFares = function () {
+    var Fare = Parse.Object.extend("Fare");
+    var queryAll = new Parse.Query(Fare);
     return queryAll.find();
 };
 router.get('/', function (req, res, next) {
-    getAllRoutes()
-        .then(function (data) {
-            res.send({
-                status: 'success',
-                data: data
-            });
-        }, function (err) {
+   getAllFares()
+       .then(function (data) {
+           res.send({
+               status: 'success',
+               data: data
+           });
+       }, function (err) {
            res.send({
                status: 'error',
                message: err.message
            });
-    });
+       });
 });
-//region ROUTE CONFIG
-
 module.exports = router;
-//endregion

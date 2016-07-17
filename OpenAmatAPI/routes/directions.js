@@ -13,27 +13,27 @@ var Moment = require('moment');
 Parse.initialize('openamat');
 Parse.serverURL = 'http://localhost:1337/parse';
 _.find = find;
-//region Helper Method
-var getAllRoutes = function (successCallback, errorCallback) {
-    var Route = Parse.Object.extend("Route");
-    var queryAll = new Parse.Query(Route);
-    return queryAll.find();
+var getRouteDirections = function (routeId) {
+    var Direction = Parse.Object.extend("Direction");
+    var query = new Parse.Query(Direction);
+    query.include("route");
+    query.equalTo('route_id', routeId);
+    return query.find();
 };
-router.get('/', function (req, res, next) {
-    getAllRoutes()
+router.get('/:routeId', function (req, res, next) {
+    var routeId = req.params.routeId;
+    getRouteDirections(routeId)
         .then(function (data) {
             res.send({
                 status: 'success',
                 data: data
             });
         }, function (err) {
-           res.send({
-               status: 'error',
-               message: err.message
-           });
-    });
+            res.send({
+                status: 'error',
+                message: err.message
+            });
+        });
 });
-//region ROUTE CONFIG
-
-module.exports = router;
 //endregion
+module.exports = router;

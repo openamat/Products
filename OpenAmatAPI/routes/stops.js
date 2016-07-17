@@ -6,92 +6,65 @@ var path = require('path');
 var _ = require('lodash');
 var find = require('lodash.find');
 var dataPath = path.join(process.cwd(), 'data');
+var express = require('express');
+var router = express.Router();
+var Parse = require('parse/node');
+var Moment = require('moment');
+Parse.initialize('openamat');
+Parse.serverURL = 'http://localhost:1337/parse';
 _.find = find;
 //region HELPER METHODS
-var getAllStops = function (successCallback, errorCallback) {
-    fs.readFile(path.join(dataPath, 'stops.json'), 'utf-8', function (err, data) {
-        if(err) {
-            console.log(err);
-            errorCallback(err);
-        }
-        var stops = JSON.parse(data);
-        successCallback(stops);
-    });
+var getAllStops = function () {
+    var Stop = Parse.Object.extend("Stop");
+    var queryAll = new Parse.Query(Stop);
+    return queryAll.find();
 };
-var getRouteStops = function (routeId, directionId, successCallback, errorCallback) {
-    fs.readFile(path.join(dataPath, 'route_stops.json'), 'utf-8', function (err, data) {
-       if(err) {
-           console.log(err);
-           errorCallback(err);
-       }
-       var allRouteStops = JSON.parse(data);
-       var routeStops = _.filter(allRouteStops, function (routeStop) {
-            return routeStop.route_id === routeId && routeStop.direction_id === directionId;
-       });
-       routeStops = _.sortBy(routeStops, ['order']);
-        fs.readFile(path.join(dataPath, 'stops.json'), 'utf-8', function (err, data) {
-           if(err) {
-               console.log(err);
-               errorCallback(err);
-           }
-            var allStops = JSON.parse(data);
-            _.each(routeStops, function (routeStop) {
-                var stop = _.find(allStops, {stop_id: routeStop.stop_id});
-                if(stop) {
-                    routeStop.stop_code = stop.stop_code;
-                    routeStop.stop_name = stop.stop_name;
-                    routeStop.stop_lat = stop.stop_lat;
-                    routeStop.stop_lon = stop.stop_lon;
-                }
-            });
-            successCallback(routeStops);
+var getRouteStops = function (routeId, directionId) {
+    var Route = Parse.Object.extend("Route");
+    var Direction = Parse.Object.extend("Direction");
+    var Stop = Parse.Object.extend("Stop");
+    var queryDirection = new Parse.Query(Direction);
+    queryDirection
+        .equalTo('route_id', routeId)
+        .equalTo('direction_id', parseInt(directionId));
+    return queryDirection.find()
+        .then(function (directions) {
+            var direction = directions[0];
+            var relation = direction.relation("stops");
+            var query = relation.query();
+            return query.find();
         });
-    });
 };
 //endregion
 //region ROUTE CONFIG
-var allStops = {
-    method: 'GET',
-    path: '/stops',
-    handler: function (request, reply) {
-        getAllStops(function (data) {
-            reply({
-                resultCode: 'OK',
-                resultObj: data
+router.get('/', function (req, res, next) {
+   getAllStops()
+       .then(function (data) {
+           res.send({
+               status: 'success',
+               data: data
+           });
+       }, function (err) {
+           res.send({
+               status: 'error',
+               message: err.message
+           });
+       });
+});
+router.get('/:routeId/:directionId', function (req, res, next) {
+    var routeId = req.params.routeId;
+    var directionId = req.params.directionId;
+    getRouteStops(routeId, directionId)
+        .then(function (data) {
+            res.send({
+                status: 'success',
+                data: data
             });
-        },function (err) {
-            reply({
-                resultCode: 'KO',
-                error: err
-            })
+        }, function (err) {
+            res.send({
+                status: 'error',
+                message: err.message
+            });
         });
-    }
-};
-var routeStops = {
-    method: 'GET',
-    path: '/stops/{routeId}/{directionId}',
-    handler: function (request, reply) {
-        var routeId = request.params.routeId;
-        var directionId = request.params.directionId !== undefined ? parseInt(request.params.directionId) : 0;
-        getRouteStops(
-            routeId,
-            directionId,
-            function (data) {
-                reply({
-                    resultCode: 'OK',
-                    resultObj: data
-                });
-            }, function (err) {
-                reply({
-                    resultCode: 'KO',
-                    error: err
-                })
-            });
-    }
-};
-var stops = {
-    allStops: allStops,
-    routeStops: routeStops
-};
-
-module.exports = stops;
+});
+module.exports = router;
