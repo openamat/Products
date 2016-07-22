@@ -1,0 +1,121 @@
+
+/*
+|--------------------------------------------------------------------------
+| Dark Login Template
+|--------------------------------------------------------------------------
+*/
+
+/* DARK LAYOUT */
+
+.center {
+    text-align: center;
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}
+.white {
+    color: #fff;
+}
+.dark-container {
+    margin: 20px auto;
+    width: 600px;
+    max-width: 100%;
+    padding: 10px;
+}
+.logo-big {
+    margin: 0 auto 30px auto;
+    text-align: center;
+}
+.logo-small {
+    margin: 40px auto 40px auto;
+    text-align: center;
+}
+.logo-big img {
+    width: 130px;
+}
+.logo-small img {
+    width: 90px;
+}
+.output-msg {
+    margin-top: 130px;
+}
+.password-msg {
+    margin: 30px 0 50px 0;
+}
+.login-form {
+    width: 300px;
+    margin: 0 auto;
+}
+.login-form label, .login-form input {
+    display: block;
+}
+.login-form label {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 300;
+}
+.login-form input {
+    margin: 5px 0 20px 0px;
+    border: none;
+    background: none;
+    border-bottom: 1px solid #999898;
+    padding: 10px 0;
+    width: 100%;
+    padding-left: 10px;
+    outline: none;
+}
+.input-container:focus label {
+    color: #ff0000;
+}
+.login-btn {
+    border: none;
+    padding: 10px 70px;
+    color: #fff;
+    background: #2c98F0;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 50px;
+}
+.login-btn:hover {
+    background: #2C98D0;
+}
+.form-error-msg {
+    font-size: 10px;
+    color: #f36d6d;
+    padding: 0 0 10px 0;
+    margin-top: -10px;
+}
+label.grey {
+    color: #827c7f;
+}
+label a {
+    color: #fff;
+}
+label a:hover {
+    color: #eee;
+}
+.input-right-icon {
+    position: relative;
+}
+.input-right-icon input {
+    padding-right: 20px;
+}
+.right-icon {
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    background: none;
+    border: none;
+    color: #827c7f;
+}
+#pwd-eye {
+    transition: all 0.2s ease 0s;
+}
+#pwd-eye.closed {
+    color: #000000;
+}
