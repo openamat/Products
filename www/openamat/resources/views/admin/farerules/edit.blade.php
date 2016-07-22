@@ -13,7 +13,7 @@
                 <input name="_method" type="hidden" value="PATCH">
                 {!! csrf_field() !!}
 
-                @form_maker_object($farerule, FormMaker::getTableColumns('$farerules'))
+                @form_maker_object($farerule, FormMaker::getTableColumns('farerules'))
 
                 <div class="col-md-12 raw-margin-top-24">
                     <a class="btn btn-default pull-left" href="{{ URL::previous() }}">Cancel</a>

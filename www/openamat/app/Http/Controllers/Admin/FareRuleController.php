@@ -22,7 +22,7 @@ class FareRuleController extends Controller
     public function index(Request $request)
     {
         $farerules = $this->service->paginated();
-        return view('farerules.index')->with('farerules', $farerules);
+        return view('admin.farerules.index')->with('farerules', $farerules);
     }
 
     /**
@@ -33,7 +33,7 @@ class FareRuleController extends Controller
     public function search(Request $request)
     {
         $farerules = $this->service->search($request->search);
-        return view('farerules.index')->with('farerules', $farerules);
+        return view('admin.farerules.index')->with('farerules', $farerules);
     }
 
     /**
@@ -43,7 +43,7 @@ class FareRuleController extends Controller
      */
     public function create()
     {
-        return view('farerules.create');
+        return view('admin.farerules.create');
     }
 
     /**
@@ -57,10 +57,10 @@ class FareRuleController extends Controller
         $result = $this->service->create($request->except('_token'));
 
         if ($result) {
-            return redirect(route('farerules.edit', ['id' => $result->id]))->with('message', 'Successfully created');
+            return redirect(route('admin.farerules.edit', ['id' => $result->id]))->with('message', 'Successfully created');
         }
 
-        return redirect(route('farerules.index'))->with('message', 'Failed to create');
+        return redirect(route('admin.farerules.index'))->with('message', 'Failed to create');
     }
 
     /**
@@ -72,7 +72,7 @@ class FareRuleController extends Controller
     public function show($id)
     {
         $farerule = $this->service->find($id);
-        return view('farerules.show')->with('farerule', $farerule);
+        return view('admin.farerules.show')->with('farerule', $farerule);
     }
 
     /**
@@ -84,7 +84,7 @@ class FareRuleController extends Controller
     public function edit($id)
     {
         $farerule = $this->service->find($id);
-        return view('farerules.edit')->with('farerule', $farerule);
+        return view('admin.farerules.edit')->with('farerule', $farerule);
     }
 
     /**
@@ -116,9 +116,9 @@ class FareRuleController extends Controller
         $result = $this->service->destroy($id);
 
         if ($result) {
-            return redirect(route('farerules.index'))->with('message', 'Successfully deleted');
+            return redirect(route('admin.farerules.index'))->with('message', 'Successfully deleted');
         }
 
-        return redirect(route('farerules.index'))->with('message', 'Failed to delete');
+        return redirect(route('admin.farerules.index'))->with('message', 'Failed to delete');
     }
 }

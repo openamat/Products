@@ -89,6 +89,17 @@ class RouteRepository
     }
 
     /**
+     * Truncate all Fares
+     *
+     *
+     * @return \Illuminate\Support\Collection|null|static|Fare
+     */
+    public function truncate()
+    {
+        return $this->model->truncate();
+    }
+
+    /**
      * Updates Route in the database
      *
      * @param int $id

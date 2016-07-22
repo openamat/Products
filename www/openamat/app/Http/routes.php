@@ -198,5 +198,18 @@ Route::group(['middleware' => 'auth'], function(){
             'uses' => 'FareRuleController@search'
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Trip Routes
+        |--------------------------------------------------------------------------
+        */
+
+        Route::resource('trips', 'TripController', ['except' => ['show']]);
+        Route::post('trips/search', [
+            'as' => 'trips.search',
+            'uses' => 'TripController@search'
+        ]);
+
+
     });
 });

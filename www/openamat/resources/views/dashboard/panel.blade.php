@@ -8,6 +8,8 @@
     <li><a href="{!! url('admin/agencies') !!}"><span class="fa fa-lock"></span> Agencies</a></li>
     <li><a href="{!! url('admin/routes') !!}"><span class="fa fa-lock"></span> Routes</a></li>
     <li><a href="{!! url('admin/shapes') !!}"><span class="fa fa-lock"></span> Shapes</a></li>
-    <li><a href="{!! url('admin/fares') !!}"><span class="fa fa-lock"></span> Fare</a></li>
-    <li><a href="{!! url('admin/stops') !!}"><span class="fa fa-lock"></span> Stop</a></li>
+    <li><a href="{!! url('admin/fares') !!}"><span class="fa fa-lock"></span> Fares</a></li>
+    <li><a href="{!! url('admin/farerules') !!}"><span class="fa fa-lock"></span> Fare Rules</a></li>
+    <li><a href="{!! url('admin/stops') !!}"><span class="fa fa-lock"></span> Stops</a></li>
+    <li><a href="{!! url('admin/trips') !!}"><span class="fa fa-lock"></span> Trips</a></li>
 </ul>

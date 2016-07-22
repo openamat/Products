@@ -89,6 +89,17 @@ class ShapeRepository
     }
 
     /**
+     * Truncate all Fares
+     *
+     *
+     * @return \Illuminate\Support\Collection|null|static|Fare
+     */
+    public function truncate()
+    {
+        return $this->model->truncate();
+    }
+
+    /**
      * Updates Shape in the database
      *
      * @param int $id

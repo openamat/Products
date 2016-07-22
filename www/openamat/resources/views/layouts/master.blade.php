@@ -13,11 +13,11 @@
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
         <!-- Local -->
-        <link rel="stylesheet" type="text/css" href="/css/raw.min.css">
-        <link rel="stylesheet" type="text/css" href="/css/app.css">
+        <link rel="stylesheet" type="text/css" href="./css/raw.min.css">
+        <link rel="stylesheet" type="text/css" href="./css/app.css">
 
         <!-- Icons -->
-        <link rel="stylesheet" type="text/css" href="/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+        <link rel="stylesheet" type="text/css" href="./fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,7 +47,7 @@
 
         <div class="pull-left raw100 navbar navbar-fixed-bottom">
             <div class="pull-left footer">
-                <p class="raw-margin-left-20">&copy; {!! date('Y') !!} <a href="http://sheephero.com" target="_blank">OpenAmat</a>
+                <p class="raw-margin-left-20">&copy; {!! date('Y') !!} <a href="http://openamat.com" target="_blank">OpenAmat</a>
                     @if (Session::get('original_user'))
                         <a class="btn btn-default pull-right btn-xs" href="/users/switch-back">Return to your Login</a>
                     @endif
@@ -62,7 +62,7 @@
         @yield("pre-javascript")
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <script src="/js/all.js"></script>
+        <script src="./js/all.js"></script>
         @yield("javascript")
     </body>
 </html>

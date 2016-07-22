@@ -99,3 +99,23 @@ Route::group(['middleware' => 'jwt.auth'], function(){
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::resource('api/v1/farerules', 'Api\FareRuleController');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Trip API Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::group(['middleware' => 'jwt.auth'], function(){
+    Route::resource('api/v1/trips', 'Api\TripController');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Import Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::resource('api/v1/imports/basic', 'Api\ImportController');
+
