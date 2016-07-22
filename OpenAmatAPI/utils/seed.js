@@ -23,28 +23,31 @@ var Stop = Parse.Object.extend('Stop');
 var Trip = Parse.Object.extend('Trip');
 var Fare = Parse.Object.extend('Fare');
 var Direction = Parse.Object.extend('Direction');
+var StopTime = Parse.Object.extend('StopTime');
 //endregion
 
+//region Array
+var routesObject = [];
+var stopsObject = [];
+var tripsObject = [];
+var faresObject = [];
+var stopTimesObject = [];
 //region CREATE COLLECTIONS
 var createRoutes = function () {
-    var promise = Parse.Promise.as();
-    var createRoute = function (promise, route) {
-        return promise.then(function () {
-            var newRoute = new Route();
-            _.each(route, function (value, key) {
-                newRoute.set(key, value);
-            });
-            console.log("Route with route_id -> " + newRoute.get('route_id'));
-            return newRoute.save();
+    var createRoute = function (route) {
+        var newRoute = new Route();
+        _.each(route, function (value, key) {
+            newRoute.set(key, value);
         });
+        routesObject.push(newRoute);
     };
     var data = fs.readFileSync(path.join(dataPath, 'routes.json'), 'utf-8');
     var routes = JSON.parse(data);
-    console.log("Routes length -> " + routes.length);
+    console.log("Start create routes");
     routes.forEach(function (route) {
-        promise = createRoute(promise, route);
+        createRoute(route);
     });
-    return promise;
+    return Parse.Object.saveAll(routesObject);
 };
 var createRouteDirections = function () {
     var promise = Parse.Promise.as();
@@ -88,90 +91,92 @@ var createRouteDirections = function () {
     return promise;
 };
 var createStops = function () {
-    var createStop = function (promise, stop) {
-        return promise.then(function () {
-            var newStop = new Stop();
-            _.each(stop, function (value, key) {
-                newStop.set(key, value);
-            });
-            console.log("Stop with stop_id " + newStop.get('stop_id'));
-            return newStop.save();
+    var createStop = function (stop) {
+        var newStop = new Stop();
+        _.each(stop, function (value, key) {
+            newStop.set(key, value);
         });
+        stopsObject.push(newStop);
     };
     console.log('Start create stops');
-    var promise = Parse.Promise.as();
     var data = fs.readFileSync(path.join(dataPath, 'stops.json'), 'utf-8');
     var stops = JSON.parse(data);
     console.log("Stops length -> " + stops.length);
     stops.forEach(function (stop) {
-        promise = createStop(promise, stop);
+        createStop(stop);
     });
-    return promise;
+    return Parse.Object.saveAll(stopsObject);
 };
 var createTrips = function () {
-    var promise = Parse.Promise.as();
-    var createTrip = function (promise, trip) {
-        return promise.then(function () {
-           var newTrip = new Trip();
-            _.each(trip, function (value, key) {
-               newTrip.set(key, value);
-            });
-            console.log("Trip with trip_id -> " + newTrip.get('trip_id'));
-            var queryDirection = new Parse.Query(Direction);
-            queryDirection.equalTo('route_id', trip.route_id)
-                .equalTo('direction_id', trip.direction_id);
-            return queryDirection.find()
-                .then(function (direction) {
-                    console.log(direction);
-                    newTrip.set('direction', direction);
-                    return newTrip.save();
-                });
+    var createTrip = function (trip) {
+        var newTrip = new Trip();
+        _.each(trip, function (value, key) {
+            newTrip.set(key, value);
         });
+        tripsObject.push(newTrip);
     };
     var data = fs.readFileSync(path.join(dataPath, 'trips.json'), 'utf-8');
     var trips = JSON.parse(data);
+    console.log("Start create trips");
     trips.forEach(function (trip) {
-        promise = createTrip(promise, trip);
+        createTrip(trip);
     });
-    return promise;
+    return Parse.Object.saveAll(tripsObject);
+};
+var createStopTimes = function () {
+    var createStopTime = function (stopTime) {
+        var newStopTime = new StopTime();
+        _.each(stopTime, function  (value, key) {
+            newStopTime.set(key, value);
+        });
+        stopTimesObject.push(newStopTime);
+    };
+    var data = fs.readFileSync(path.join(dataPath, 'stop_times.json'), 'utf-8');
+    var stopTimes = JSON.parse(data);
+    console.log("Start create stopTimes");
+    console.log(stopTimes.length);
+    stopTimes.forEach(function (stopTime) {
+        createStopTime(stopTime);
+    });
+    console.log("Setting up stopTimes promises");
+    return Parse.Object.saveAll(stopTimesObject);
 };
 var createFares = function () {
-    var promise = Parse.Promise.as();
-    var createFare = function (promise, fare) {
-      return promise.then(function () {
-         var newFare = new Fare();
-          _.each(fare, function (value, key) {
-             newFare.set(key, value);
-          });
-          console.log("Fare with fare_id -> " + newFare.get('fare_id'));
-          return newFare.save();
-      });
+    var createFare = function (fare) {
+        var newFare = new Fare();
+        _.each(fare, function (value, key) {
+            newFare.set(key, value);
+        });
+        console.log("Fare with fare_id -> " + newFare.get('fare_id'));
+        faresObject.push(newFare);
     };
     var data = fs.readFileSync(path.join(dataPath, 'fare_attributes.json'), 'utf-8');
     var fares = JSON.parse(data);
     fares.forEach(function (fare) {
-        promise = createFare(promise, fare);
+        createFare(fare);
     });
-    return promise;
+    return  Parse.Object.saveAll(faresObject);
 };
 var resetTables = function () {
     var resetTable = function(promise, tableName) {
-        var Table = Parse.Object.extend(tableName);
-        var query = new Parse.Query(Table);
-        query.limit(100000);
-        return query.find().then(function(items) {
-            console.log('Eliminazione' + tableName + ": " + items.length + " oggetti");
-            var promise = Parse.Promise.as();
-            items.forEach(function(item) {
-                promise = promise.then(function() {
-                    return item.destroy();
+        return promise.then(function () {
+            var Table = Parse.Object.extend(tableName);
+            var query = new Parse.Query(Table);
+            query.limit(100000);
+            return query.find().then(function (items) {
+                console.log('Eliminazione ' + tableName + ": " + items.length + " oggetti");
+                var promise = Parse.Promise.as();
+                items.forEach(function (item) {
+                    promise = promise.then(function () {
+                        return item.destroy();
+                    });
                 });
+                return promise;
             });
-            return promise;
         });
     };
     var promise = Parse.Promise.as();
-    var tables = ["Stop", "Direction", "Route", "Trip", "Fare"];
+    var tables = ["Stop", "Route", "Trip", "Fare", "StopTime"];
     tables.forEach(function (table) {
        promise = resetTable(promise, table);
     });
@@ -188,14 +193,17 @@ var storeObjects = function () {
         .then(function () {
             return createRoutes();
         })
+        // .then(function () {
+        //     return createRouteDirections();
+        // })
         .then(function () {
-            return createRouteDirections();
+            return createTrips();
+        })
+        .then(function () {
+            return createStopTimes();
         })
         .then(function () {
             return createFares();
-        })
-        .then(function () {
-            return createTrips();
         })
         .then(function () {
             console.log("All done!");
