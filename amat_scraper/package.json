@@ -1,0 +1,17 @@
+{
+  "name": "amat_scraper",
+  "version": "1.0.0",
+  "description": "Amat news scraper",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sum1190",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "restify": "^4.1.1",
+    "scrape-it": "^3.1.1"
+  }
+}
