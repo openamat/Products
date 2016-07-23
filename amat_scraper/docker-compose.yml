@@ -1,0 +1,6 @@
+openamat_node:
+  build: ./
+  volumes:
+    - .:/root
+  ports:
+    - 8888:8888

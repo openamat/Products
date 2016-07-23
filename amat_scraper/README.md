@@ -11,12 +11,23 @@ Scraper per le news in homepage nel sito ufficiale [AMAT](http://www.amat.pa.it)
 - [restify](https://github.com/restify/node-restify)
 - [dotenv](https://github.com/motdotla/dotenv)
 
-## Utilizzo
+## Installazione ed utilizzo
 Una volta clonato il progetto, eseguire i seguenti comandi
 
-    npm install
     cp .env-dist .env
+
+### Installazione manuale
+
+    npm install
     npm start
+
+### Installazione automatica
+
+    ./install_and_execute
+
+### Installazione tramite Docker
+
+    docker-compose up
 
 Una volta completata l'installazione e avviato il server, recarsi sul browser all'indirizzo
 
@@ -32,4 +43,3 @@ Il file **.env** contiene delle variabili d'ambiente utili per registrare config
 
     AMAT_BASE_URL (default su homepage di AMAT senza lo slash finale)
     RESTIFY_PORT (default: 8888)
-
