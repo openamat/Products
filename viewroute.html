@@ -1,57 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8 />
-<title>#openmat | query per rotta</title>
-<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
-<style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
+	<meta charset=utf-8 />
+	<title>#openmat | query per rotta</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+	<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+	<style>
+		body { margin:0; padding:0; }
+		#map { position:absolute; top:0; bottom:0; width:100%; }
+	</style>
 </head>
 <body>
 
 
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
-<div id='map'></div>
-<a href="http://openamat.it/" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://openamat.github.io/Products/imgs/ribbon_openamat.png" alt="#openamat"> </a>
+	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-hash/v0.2.1/leaflet-hash.js'></script>
+	<div id='map'></div>
+	<a href="http://openamat.it/" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://openamat.github.io/Products/imgs/ribbon_openamat.png" alt="#openamat"> </a>
 
 
-<script>
+	<script>
 
 
 
-function getURLParameter(name) {
-  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-}
+		function getURLParameter(name) {
+			return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+		}
 
-myvar = getURLParameter('rotta');
+		myvar = getURLParameter('rotta');
 
-// alert(myvar);
 
-L.mapbox.accessToken = 'pk.eyJ1IjoiYWJvcnJ1c28iLCJhIjoibFpOMXpEZyJ9.HNHxWxDvvFz5i2mgMEll7Q';
-var map = L.mapbox.map('map', 'mapbox.streets')
-    .setView([38.1089, 13.3545], 15);
+		L.mapbox.accessToken = 'pk.eyJ1IjoiYWJvcnJ1c28iLCJhIjoibFpOMXpEZyJ9.HNHxWxDvvFz5i2mgMEll7Q';
+		var map = L.mapbox.map('map', 'mapbox.streets')
+		.setView([38.1089, 13.3545], 15);
 
-// As with any other AJAX request, this technique is subject to the Same Origin Policy:
-// http://en.wikipedia.org/wiki/Same_origin_policy
-// So the CSV file must be on the same domain as the Javascript, or the server
-// delivering it should support CORS.
-var featureLayer = L.mapbox.featureLayer()
-    .loadURL('https://tanto.carto.com:443/api/v2/sql?format=GeoJSON&q=select%20*%20from%20public.rotte%20where%20public.rotte.route_id%3D%27' + myvar + '%27')
-    .addTo(map);
+		var featureLayer = L.mapbox.featureLayer()
+		.loadURL('https://tanto.carto.com:443/api/v2/sql?format=GeoJSON&q=select%20*%20from%20public.rotte%20where%20public.rotte.route_id%3D%27' + myvar + '%27')
+		.addTo(map);
 
-featureLayer.on('ready', function() {
-    // featureLayer.getBounds() returns the corners of the furthest-out markers,
-    // and map.fitBounds() makes sure that the map contains these.
-    map.fitBounds(featureLayer.getBounds());
-});   
+		featureLayer.on('ready', function() {
+			map.fitBounds(featureLayer.getBounds());
+		});   
 
-var hash = L.hash(map);
+		var hash = L.hash(map);
 
-</script>
+	</script>
 
 
 </body>
