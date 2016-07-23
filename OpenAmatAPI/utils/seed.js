@@ -162,7 +162,7 @@ var resetTables = function () {
         return promise.then(function () {
             var Table = Parse.Object.extend(tableName);
             var query = new Parse.Query(Table);
-            query.limit(100000);
+            query.limit(500000);
             return query.find().then(function (items) {
                 console.log('Eliminazione ' + tableName + ": " + items.length + " oggetti");
                 var promise = Parse.Promise.as();

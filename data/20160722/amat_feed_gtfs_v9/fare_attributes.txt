@@ -1,0 +1,4 @@
+﻿fare_id,price,currency_type,payment_method,transfers,transfer_duration
+before_boarding,1.40,EUR,1, ,5400
+navetta,0,EUR,0, , 
+on_board,1.80,EUR,0, ,5400
