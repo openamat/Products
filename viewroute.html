@@ -49,7 +49,15 @@
 			map.fitBounds(featureLayer.getBounds());
 		});
 
+		featureLayer.on('ready', function() {
+			featureLayer.eachLayer(function (layer) {
+				layer.openPopup();
+			});
+		})
+
 		var hash = L.hash(map);
+
+
 
 	</script>
 
