@@ -36,7 +36,7 @@
 		var featureLayer = L.mapbox.featureLayer()
 		.loadURL('https://tanto.carto.com:443/api/v2/sql?format=GeoJSON&q=select%20*%20from%20public.rotte%20where%20public.rotte.route_id%3D%27' + myvar + '%27')
 		.on('ready', function() {
-			featureLayer.eachLayer(function (layer) {
+			featureLayer.eachLayer(function(layer) {
 				layer.bindPopup('<h3>'+layer.feature.properties.route_id + ' | ' + layer.feature.properties.route_long_name +'</h3>'+
 					'<strong>Lunghezz (m.)</strong>: ' + layer.feature.properties.lunghezza_m + '</br>' +
 					'<strong>Numero corse (feriali)</strong>: ' + layer.feature.properties.numerocorseferiali + '</br>' +
