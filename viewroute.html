@@ -38,7 +38,7 @@
 		.on('ready', function() {
 			featureLayer.eachLayer(function(layer) {
 				layer.bindPopup('<h3>'+layer.feature.properties.route_id + ' | ' + layer.feature.properties.route_long_name +'</h3>'+
-					'<strong>Lunghezz (m.)</strong>: ' + layer.feature.properties.lunghezza_m + '</br>' +
+					'<strong>Lunghezza (m.)</strong>: ' + layer.feature.properties.lunghezza_m + '</br>' +
 					'<strong>Numero corse (feriali)</strong>: ' + layer.feature.properties.numerocorseferiali + '</br>' +
 					'<strong>Numero fermate</strong>: ' + layer.feature.properties.numerofermate);
 			});
